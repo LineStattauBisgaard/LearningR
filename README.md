@@ -1,5 +1,6 @@
 
-# LearningR: practising awesomeness
+# LearningR: awesomeness practising 🥇
+
 #test af at tilføje noget i github
 
 TODO: Give a brief description of what your project is about
