@@ -163,3 +163,21 @@ nhanes_small %>%
 nhanes_small %>%
     summarise(max_bmi = max(bmi, na.rm = TRUE),
               min_bmi = min(bmi, na.rm = TRUE))
+
+##excercise 9.16
+
+# 1.Calculate the mean of weight and age
+nhanes_small %>%
+    summarise(mean_weight = mean(weight, na.rm = TRUE),
+              mean_age = mean(age))
+
+# 2.Calculate the max and min of height
+nhanes_small %>%
+    summarise(max_height = max(height,na.rm = TRUE),
+              min_height = min(height, na.rm = TRUE))
+
+# 3.Calculate the median of age and phys_active_days
+nhanes_small %>%
+    summarise(median_age = median(age),
+                 median_phys_active_days = median(phys_active_days, na.rm = TRUE))
+
