@@ -68,3 +68,98 @@ nhanes_small %>%
 nhanes_small %>%
     select(phys_active) %>%
     rename(physically_active = phys_active)
+
+##Filtering
+#Filter for all females
+
+nhanes_small %>%
+    filter(sex == "female")
+
+#Participants who are not female
+nhanes_small %>%
+    filter(sex != "female")
+
+#participants who have BMI equal to 25
+nhanes_small %>%
+    filter(bmi == 25)
+
+nhanes_small %>%
+    filter(bmi >= 25)
+
+# BMI greater than 25 AND sex is female
+nhanes_small %>%
+    filter(bmi > 25 & sex == "female")
+
+# either greater than 25 OR sex is female
+
+nhanes_small %>%
+    filter(bmi > 25 | sex == "female")
+
+##Arranging data
+
+#arranging by age in ascending order
+nhanes_small %>%
+    arrange(age)
+
+#arranging by sex in ascending order
+nhanes_small %>%
+    arrange(sex)
+
+#arranging by age in descending order
+nhanes_small %>%
+    arrange(desc(age))
+
+#arranging by sex then age in ascending order
+nhanes_small %>%
+    arrange(sex, age)
+
+#arranging by descending for sex then age in ascending order
+nhanes_small %>%
+    arrange(desc(sex), age)
+
+## Transform or add columns
+
+#height in meters
+nhanes_small %>%
+    mutate(height = height / 100)
+
+# Add a new columnn with logged height values
+nhanes_small %>%
+    mutate(logged_height = log(height))
+
+# modify more than 1 new columnn
+nhanes_small %>%
+    mutate(height = height / 100,
+           logged_height = log(height))
+
+#New column based on how active participants are
+nhanes_small %>%
+    mutate(highly_active = if_else(phys_active_days >= 5, "Yes", "No"))
+
+nhanes_update <- nhanes_small %>%
+    mutate(height = height / 100,
+           logged_height = log(height),
+           highly_active = if_else(phys_active_days >= 5, "Yes", "No"))
+
+str(nhanes_update)
+
+## summary statistics by group
+
+#find max BMI
+nhanes_small %>%
+    summarise(max_bmi = max(bmi))
+
+#doesnt work doue to NA values in datatable
+nhanes_small %>%
+    summarise(max_bmi = max(bmi, na.rm = TRUE))
+
+#how to get information on how many NA's the column includes
+nhanes_small %>%
+    summarise(sum_na = sum(is.na(bmi)))
+
+#luke - but maybe easier to use summary function toget this info
+
+#calculating 2 summary statistics
+nhanes_small %>%
+    summarise(max_bmi = max(bmi, na.rm = TRUE),
+              min_bmi = min(bmi, na.rm = TRUE))
