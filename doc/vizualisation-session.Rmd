@@ -1,0 +1,117 @@
+---
+title: "Data viz"
+author: "Line Stattau Bisgaard"
+date: "17/6/2021"
+output: html_document
+---
+
+```{r setup}
+#load packages
+source(here::here("R/package-loading.R"))
+
+#load the tidied dataset (NHANES)
+load(here::here("data/nhanes_small.rda"))
+```
+
+# One variable plots
+
+```{r continous-variables}
+ggplot(nhanes_small, aes(x = bmi)) +
+    geom_density()
+
+#geom:"what type of plot"
+#aes: short for astetics "
+
+#could also make it as a histogram
+
+ggplot(nhanes_small, aes(x = bmi)) +
+    geom_histogram()
+
+```
+
+```{r discrete-variables}
+ggplot(nhanes_small, aes(x = sex)) +
+    geom_bar()
+    
+ggplot(nhanes_small, aes(x = diabetes)) +
+    geom_bar()
+
+```
+
+```{r remove-missing-diabetes}
+
+#fjerner alle personer der har na i diabetes variabel
+nhanes_tidied <-nhanes_small %>% 
+    filter(!is.na(diabetes))
+
+#gemmer den nye data set i datafolder
+usethis::use_data(nhanes_tidied, overwrite = TRUE)
+
+ggplot(nhanes_tidied, aes(x = diabetes)) +
+    geom_bar()
+
+```
+# 2 vaiables
+
+```{r 2-continuos-variables}
+
+# Using 2 continuous variables
+bmi_chol <- ggplot(nhanes_tidied, aes(x = bmi, y = tot_chol))
+
+# Standard scatter plot
+bmi_chol + 
+    geom_point()
+```
+
+
+```{r 2-continous-variables}
+# Standard scatter plot, but with hexagons
+bmi_chol + 
+    geom_hex()
+
+# Runs a smoothing line with confidence interval
+bmi_chol + 
+    geom_smooth()
+
+#Or combine two geoms, hex plot with smoothing line
+bmi_chol + 
+    geom_hex() +
+    geom_smooth()
+```
+
+
+```{r 2-discrete-variables}
+
+#fordi vi bruger pipe skalman ikke informere ggplot omhvilket dataset man ønsker at lave ggplot på- det ligger i pipen.
+
+two_discrete <-nhanes_tidied %>% 
+    ggplot((aes(x = diabetes, fill = sex)))
+
+two_discrete +
+    geom_bar()
+
+two_discrete +
+    geom_bar(position = position_dodge())
+
+```
+
+```{r discrete-continous-variables}
+
+two_mixed <- nhanes_tidied %>% 
+    ggplot(aes(x = diabetes, y = bmi))
+
+two_mixed +
+    geom_boxplot()
+
+#hvis man gerne vil se alle dots
+
+two_mixed +
+    geom_jitter()
+
+#måske ikke det bedste når man har så mange datapoints.
+
+two_mixed +
+    geom_violin()
+
+```
+
